@@ -30,9 +30,7 @@ The kaggle dataset used for our recommendation system was created by scraping Al
 - Rank the ingredients based on its frequency i.e. each successive ingredient in the list is weighted incrementally less.
 - Create a search algorithm that utilizes similarity scoring to rank recipes according to the greatest similarity to the user-input list of ingredients and returns recipe recommendations based on the scores. 
 
-
-
-
+## Put the architechture here 
 
 ## Installation & packages and their versions
 
