@@ -45,8 +45,8 @@ The overall architechture is visually summarized above. The recipe dataset is cl
 ### Model Features:
 
 - Search based on ingredients list (e.g.: [ingredient 1, ingredient 2, ingredient 3])
-## - Option to rank ingredients in order of ingredients. i.e. each successive ingredient in list is weighted incrementally less in the search query??
-## - what else??
+#### - Option to rank ingredients in order of ingredients. i.e. each successive ingredient in list is weighted incrementally less in the search query??
+#### - what else??
 
 ## Installation & packages and their versions
 
