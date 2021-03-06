@@ -6,17 +6,26 @@ Many factors influence the meals being cooked at home today. People are always o
 
 ## Dataset Description:
 
-The kaggle dataset used for our recommendation system was created by scraping AllRecipes.com, a popular social network recipe site. With over 49,085 recipes, the dataset represents a varied range of cuisines and tastes. Given below is the description of the columns available in the dataset used for this project.
+The kaggle dataset used for our recommendation system was created by scraping AllRecipes.com, a popular social network recipe site. For each recipe, the dataset contains a corresponding row with ecipe id, name, average ratings of reviewers, image url, review nums, ingredients, cooking directions, nutritions, and reviews. . We have pre-filtered the dataset to exclude records which contains repeated ingredients, no images or zero reviews to ensure data quality. The final dataset includes 49,698 recipes with 38,131 ingredients representing a varied range of cuisines and tastes. Given below is the description of the columns available in the dataset.
 
 | Column | Datatype | Value |
 | ------ | -------- | ----- |
 | recipe_id | int | A unique id associated with each recipe |
+| recipe_name | string | Name associated with each recipe |
+| aver_rate | float | a rating with each recipe |
+| image_url | string | A url corresponding to the image associated with each recipe |
+| review_nums | int | No. of reviews associated with each recipe |
+| ingredients | string | A list of ingredients associated with each recipe |
+| cooking_directions | string | Instructions for making the recipe |
+| nutritions | string | Nutritions associated with each recipe |
+| reviews | string | Reviews associated with that recipe |
+
 
 ## Data Processing:
 
 ## Objective
 
-- Given any recipe dataset, build a model to find most relevant recipes that match the user’s ingredients list.
+- Given any recipe dataset, build a model to find the most relevant recipes that match the user’s ingredients list.
 - Perform unsupervised Topic Modeling on the recipes to group recipes into topics.
 - Rank the ingredients based on its frequency i.e. each successive ingredient in the list is weighted incrementally less.
 - Create a search algorithm that utilizes similarity scoring to rank recipes according to the greatest similarity to the user-input list of ingredients and returns recipe recommendations based on the scores. 
