@@ -11,14 +11,14 @@ The kaggle dataset used for our recommendation system was created by scraping Al
 | Column | Datatype | Value |
 | ------ | -------- | ----- |
 | recipe_id | int | A unique id associated with each recipe |
-| recipe_name | string | Name associated with each recipe |
-| aver_rate | float | a rating with each recipe |
-| image_url | string | A url corresponding to the image associated with each recipe |
-| review_nums | int | No. of reviews associated with each recipe |
-| ingredients | string | A list of ingredients associated with each recipe |
+| recipe_name | string | Name of the recipe |
+| aver_rate | float | User rating for the recipe |
+| image_url | string | Image url corresponding to the image associated with the recipe |
+| review_nums | int | No. of reviews for that recipe |
+| ingredients | string | A list of ingredients associated with the recipe |
 | cooking_directions | string | Instructions for making the recipe |
-| nutritions | string | Nutritions associated with each recipe |
-| reviews | string | Reviews associated with that recipe |
+| nutritions | string | Nutritions associated with the recipe |
+| reviews | string | Reviews associated with the recipe |
 
 
 ## Data Processing:
