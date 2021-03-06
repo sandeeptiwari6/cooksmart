@@ -1,5 +1,6 @@
 ## Data 515: Software Design for Data Science
 
+## CookSmart - Recipe Recommendation system
 
 ## Introduction 
 
@@ -48,7 +49,12 @@ The overall architechture is visually summarized above. The recipe dataset is cl
 #### - Option to rank ingredients in order of ingredients. i.e. each successive ingredient in list is weighted incrementally less in the search query??
 #### - what else??
 
-## Installation & packages and their versions
+## Installations Required
+
+## Packages used
+
+- pandas version 1.0.3
+- numpy version 1.18.1
 
 
 ## License Information
