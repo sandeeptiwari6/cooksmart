@@ -22,11 +22,25 @@ urls = {
     "TIT_TOP_URL": "https://github.com/sandeeptiwari6/recommender-system-515/blob/main/src/pickles/title_topics.pickle?raw=true"
 }
 
+class DataFormatError(Exception):
+    def __init__(self, salary, message="Invalid data"):
+        super().__init__(message)
+
+def is_valid_recipe_df(data):
+
+    for col_name in ['recipe_name','ingredients','cooking_directions']:
+        if col_name not in data.columns:
+            return False
+
+    #test column types
+
+    return True
 
 class RecipeRecommender:
     def __init__(self, filepath=None, max_df=0.6, min_df=2):
         """
         Creates an instance of Recipe Recommender
+        Initialises : filepath, tfidf_vect, data, recipe_ingredient_matrix, title_tfidf
         Reads in formatted csv file and vectorize recipes
         Input:
         filepath (str)
@@ -35,32 +49,26 @@ class RecipeRecommender:
         Output:
         None
         """
-
-        if filepath is None:
+        self.filepath = filepath
+        self.tfidf_vect = TfidfVectorizer(max_df=max_df, min_df=min_df, stop_words='english')
+        if self.filepath is None:
             self.data = pd.read_csv('../data/cleaned-data_recipe.csv')
-            with open('pickles/lda.pickle', 'rb') as f:
-                self.LDA = pickle.load(f)
-            with open('pickles/vectorizer.pickle', 'rb') as f:
-                self.tfidf_vect = pickle.load(f)
             with open('pickles/recipe_topics.pickle', 'rb') as f:
                 self.recipe_ingredient_matrix = pickle.load(f)
-            with open('pickles/title_topics.pickle', 'rb') as f:
-                self.title_topic_dist = pickle.load(f)
-            self.title_tfidf = self.tfidf_vect.transform(self.data['recipe_name'])
-            self.recipe_topic_dist = np.matrix(self.LDA.transform(self.recipe_ingredient_matrix))
+            #save as pickle
+            self.title_tfidf = self.tfidf_vect.fit_transform(self.data['recipe_name'])
+
         else:
             if not os.path.exists(filepath):
                 raise FileNotFoundError(f"{filepath} is not a valid path to a dataset")
             self.data = pd.read_csv(filepath)
+            
+            if not is_valid_recipe_df(self.data):
+                raise DataFormatError("Inputted csv is incorrectly formatted")
 
-            # TODO:  make sure dataframe  is correctly formatted
-
-            # TODO: additional cleaning - bigrams, trigrams, lemmatization, lower case
-
-            self.tfidf_vect = TfidfVectorizer(max_df=max_df, min_df=min_df, stop_words='english')
             self.recipe_ingredient_matrix = self.tfidf_vect.fit_transform(self.data['ingredients'].values.astype('U'))
-            self.title_tfidf = self.tfidf_vect.transform(self.data['recipe_name'])
-            self.fit()
+            self.title_tfidf = self.tfidf_vect.fit_transform(self.data['recipe_name'])
+
 
     def fit(self, n_components=10):
         """
@@ -71,10 +79,20 @@ class RecipeRecommender:
 
         Output: None
         """
-        self.LDA = LatentDirichletAllocation(n_components=n_components, random_state=42)
-        self.LDA.fit_transform(self.recipe_ingredient_matrix)
-        self.recipe_topic_dist = np.matrix(self.LDA.transform(self.recipe_ingredient_matrix))
-        self.title_topic_dist = self.LDA.transform(self.title_tfidf)
+        self.n_components= n_components
+        if self.filepath is None and self.n_components==10:
+            with open ('pickles/lda.pickle','rb') as f:
+                self.LDA = pickle.load(f)
+            with open('pickles/title_topics.pickle', 'rb') as f:
+                self.title_topic_dist = pickle.load(f)
+            #save as pickle
+            self.recipe_topic_dist = np.matrix(self.LDA.transform(self.recipe_ingredient_matrix))
+            
+        else:   
+            self.LDA = LatentDirichletAllocation(n_components=n_components, random_state=42)
+            self.LDA.fit_transform(self.recipe_ingredient_matrix)
+            self.recipe_topic_dist = np.matrix(self.LDA.transform(self.recipe_ingredient_matrix))
+            self.title_topic_dist = self.LDA.transform(self.title_tfidf)
 
     def recipe_similarity(self, w_title=0.2, w_text=0.3):
         """
@@ -135,14 +153,14 @@ class RecipeRecommender:
             pickle.dump(self.LDA, f)
 
 
-if __name__ == "__main__":
-    rr = RecipeRecommender()
+# if __name__ == "__main__":
+#     rr = RecipeRecommender()
 
-    query = ["pepper", "chicken", "salt", "vinegar", "tomato", "cheese"]
+#     query = ["pepper", "chicken", "salt", "vinegar", "tomato", "cheese"]
 
-    # rr.get_recommendations(query)
-    # rr.visualize_fit()
-    rr.visualize_recommendation()
+#     # rr.get_recommendations(query)
+#     # rr.visualize_fit()
+#     rr.visualize_recommendation()
 
 
 
