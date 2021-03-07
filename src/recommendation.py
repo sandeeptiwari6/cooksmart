@@ -22,19 +22,26 @@ urls = {
     "TIT_TOP_URL": "https://github.com/sandeeptiwari6/recommender-system-515/blob/main/src/pickles/title_topics.pickle?raw=true"
 }
 
+
 class DataFormatError(Exception):
     def __init__(self, salary, message="Invalid data"):
         super().__init__(message)
 
+
+class QueryError(Exception):
+    def __init__(self, salary, message="Invalid Query"):
+        super().__init__(message)
+
+
 def is_valid_recipe_df(data):
 
-    for col_name in ['recipe_name','ingredients','cooking_directions']:
+    for col_name in ['recipe_name', 'ingredients', 'cooking_directions']:
         if col_name not in data.columns:
             return False
-
-    #test column types
-
+    
+    #check type for ingredients
     return True
+
 
 class RecipeRecommender:
     def __init__(self, filepath=None, max_df=0.6, min_df=2):
@@ -50,13 +57,15 @@ class RecipeRecommender:
         None
         """
         self.filepath = filepath
-        self.tfidf_vect = TfidfVectorizer(max_df=max_df, min_df=min_df, stop_words='english')
+        self.tfidf_vect = TfidfVectorizer(max_df=max_df, min_df=min_df, stop_words ='english')
         if self.filepath is None:
+            print("_________", os.getcwd())
             self.data = pd.read_csv('../data/cleaned-data_recipe.csv')
             with open('pickles/recipe_topics.pickle', 'rb') as f:
                 self.recipe_ingredient_matrix = pickle.load(f)
-            #save as pickle
-            self.title_tfidf = self.tfidf_vect.fit_transform(self.data['recipe_name'])
+            # save as pickle
+            self.title_tfidf = self.tfidf_vect.fit_transform(
+                self.data['recipe_name'])
 
         else:
             if not os.path.exists(filepath):
@@ -69,7 +78,6 @@ class RecipeRecommender:
             self.recipe_ingredient_matrix = self.tfidf_vect.fit_transform(self.data['ingredients'].values.astype('U'))
             self.title_tfidf = self.tfidf_vect.fit_transform(self.data['recipe_name'])
 
-
     def fit(self, n_components=10):
         """
         Fits an LDA model to the dataset provided
@@ -79,13 +87,13 @@ class RecipeRecommender:
 
         Output: None
         """
-        self.n_components= n_components
-        if self.filepath is None and self.n_components==10:
-            with open ('pickles/lda.pickle','rb') as f:
+        self.n_components = n_components
+        if self.filepath is None and self.n_components == 10:
+            with open('pickles/lda.pickle', 'rb') as f:
                 self.LDA = pickle.load(f)
             with open('pickles/title_topics.pickle', 'rb') as f:
                 self.title_topic_dist = pickle.load(f)
-            #save as pickle
+            # save as pickle
             self.recipe_topic_dist = np.matrix(self.LDA.transform(self.recipe_ingredient_matrix))
             
         else:   
@@ -96,8 +104,8 @@ class RecipeRecommender:
 
     def recipe_similarity(self, w_title=0.2, w_text=0.3):
         """
-        Compares topic distribution of input ingredients against topic distribution of 
-        each recipe in dataset, calculates "similarity"
+        Compares topic distribution of input ingredients against topic 
+        distribution of each recipe in dataset, calculates "similarity"
 
         Input: 
         w_title (float between 0 and 1)
@@ -113,15 +121,22 @@ class RecipeRecommender:
         scores = np.squeeze(np.asarray(scores))
         return scores
 
-    def get_recommendations(self, input_ingredients, n=3):
+    def get_recommendations(self, input_ingredients: list, n=3):
         """
-        Takes in a string of space separated ingredients, and returns 
+        Takes in a string of space separated ingredients, and returns
         a dataframe of the recipes most "similar"
 
-        Input: 
+        Input :
         input_ingredients (list of strings)
         n (int): number of recipes to return
         """
+
+        for ingredient in input_ingredients:
+            if not isinstance(ingredient, str):
+                raise QueryError("Ingredients must be strings")
+        if len(input_ingredients) < 5:
+            raise QueryError("Input atleast 5 Ingredients")
+
         input_ingredients_tfidf = self.tfidf_vect.transform([' '.join(input_ingredients)])
         self.input_ingredients_topic_dist = np.matrix(self.LDA.transform(input_ingredients_tfidf))
         scores = self.recipe_similarity()
@@ -155,11 +170,11 @@ class RecipeRecommender:
 
 # if __name__ == "__main__":
 #     rr = RecipeRecommender()
-
+#     rr.fit()
 #     query = ["pepper", "chicken", "salt", "vinegar", "tomato", "cheese"]
 
-#     # rr.get_recommendations(query)
-#     # rr.visualize_fit()
+#     rr.get_recommendations(query)
+#     rr.visualize_fit()
 #     rr.visualize_recommendation()
 
 

@@ -1,5 +1,6 @@
 import unittest
-from recommendation import RecipeRecommender as rr, DataFormatError, QueryError
+from src import RecipeRecommender as rr
+from src.recommendation import DataFormatError, QueryError
 from unittest.mock import Mock
 
 class test_rr_initialization(unittest.TestCase):
@@ -19,7 +20,7 @@ class test_rr_initialization(unittest.TestCase):
         r = rr()
         self.assertEqual(len(r.data),r.recipe_ingredient_matrix.shape[0])
 
-        r =rr('../data/cleaned-data_recipe.csv')
+        r =rr('data/cleaned-data_recipe.csv')
         self.assertEqual(len(r.data),r.recipe_ingredient_matrix.shape[0])
     
     def test_title_tfidf(self):
@@ -68,6 +69,15 @@ class test_rr_get_recommendations(unittest.TestCase):
 
         with self.assertRaises(QueryError):
             rr.get_recommendations(self,["1","2"])
+
+    # check size of ingredient topic dist
+
+    #length of sorted index
+
+    # maek sure # of recommendations =n
+
+    #make sure that scores are descending
+
 
 class test_rr_visualize_recommendation(unittest.TestCase):
     def test_visualize_call(self):
