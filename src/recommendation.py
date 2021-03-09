@@ -12,6 +12,8 @@ import plotly.express as px
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
 
+from helpers import DataFormatError, QueryError, is_valid_recipe_df
+
 
 # urls to pickled objects on github
 urls = {
@@ -23,24 +25,6 @@ urls = {
 }
 
 
-class DataFormatError(Exception):
-    def __init__(self, salary, message="Invalid data"):
-        super().__init__(message)
-
-
-class QueryError(Exception):
-    def __init__(self, salary, message="Invalid Query"):
-        super().__init__(message)
-
-
-def is_valid_recipe_df(data):
-
-    for col_name in ['recipe_name', 'ingredients', 'cooking_directions']:
-        if col_name not in data.columns:
-            return False
-    
-    #check type for ingredients
-    return True
 
 
 class RecipeRecommender:
@@ -56,16 +40,16 @@ class RecipeRecommender:
         Output:
         None
         """
+
         self.filepath = filepath
-        self.tfidf_vect = TfidfVectorizer(max_df=max_df, min_df=min_df, stop_words ='english')
+        self.tfidf_vect = TfidfVectorizer(max_df=max_df, min_df=min_df, stop_words='english')
         if self.filepath is None:
-            print("_________", os.getcwd())
             self.data = pd.read_csv('../data/cleaned-data_recipe.csv')
             with open('pickles/recipe_topics.pickle', 'rb') as f:
                 self.recipe_ingredient_matrix = pickle.load(f)
-            # save as pickle
-            self.title_tfidf = self.tfidf_vect.fit_transform(
-                self.data['recipe_name'])
+            with open('pickles/vectorizer.pickle', 'rb') as f:
+                self.tfidf_vect = pickle.load(f)
+            self.title_tfidf = self.tfidf_vect.transform(self.data['recipe_name'])
 
         else:
             if not os.path.exists(filepath):
@@ -76,7 +60,8 @@ class RecipeRecommender:
                 raise DataFormatError("Inputted csv is incorrectly formatted")
 
             self.recipe_ingredient_matrix = self.tfidf_vect.fit_transform(self.data['ingredients'].values.astype('U'))
-            self.title_tfidf = self.tfidf_vect.fit_transform(self.data['recipe_name'])
+            self.title_tfidf = self.tfidf_vect.transform(self.data['recipe_name'])
+
 
     def fit(self, n_components=10):
         """
@@ -87,13 +72,14 @@ class RecipeRecommender:
 
         Output: None
         """
-        self.n_components = n_components
-        if self.filepath is None and self.n_components == 10:
-            with open('pickles/lda.pickle', 'rb') as f:
+
+        self.n_components= n_components
+        if self.filepath is None and self.n_components==10:
+            with open ('pickles/lda.pickle','rb') as f:
                 self.LDA = pickle.load(f)
             with open('pickles/title_topics.pickle', 'rb') as f:
                 self.title_topic_dist = pickle.load(f)
-            # save as pickle
+            #save as pickle
             self.recipe_topic_dist = np.matrix(self.LDA.transform(self.recipe_ingredient_matrix))
             
         else:   
@@ -137,35 +123,40 @@ class RecipeRecommender:
         if len(input_ingredients) < 5:
             raise QueryError("Input atleast 5 Ingredients")
 
+
         input_ingredients_tfidf = self.tfidf_vect.transform([' '.join(input_ingredients)])
         self.input_ingredients_topic_dist = np.matrix(self.LDA.transform(input_ingredients_tfidf))
         scores = self.recipe_similarity()
         sorted_index = np.argsort(scores)[::-1]
         return self.data.iloc[sorted_index, :].head(n)
 
-    def visualize_fit(self):
-        topic_viz = pyLDAvis.sklearn.prepare(self.LDA, self.recipe_ingredient_matrix, self.tfidf_vect)
-        save_file = 'lda-results.html'
-        pyLDAvis.save_html(topic_viz, save_file)
-        webbrowser.open('file://' + os.path.realpath(save_file))
-        time.sleep(1)
-        os.remove(save_file)
 
-    def visualize_recommendation(self):
-        try:
-            topic_dist = np.squeeze(np.asarray(self.input_ingredients_topic_dist))
-            topics = [f"Topic {i}" for i in range(1, len(topic_dist)+1)]
-            df = pd.DataFrame({'topics': topics, 'probability': topic_dist})
-            fig = px.line_polar(df, r="probability", theta="topics", line_close=True,
-                          color_discrete_sequence=px.colors.sequential.Plasma_r, template="plotly_dark")
-            fig.show()
-        except AttributeError:
-            raise AttributeError("User must first call class method `get_recommendations` before viewing visualization")
+    # def visualize_fit(self):
+    #     topic_viz = pyLDAvis.sklearn.prepare(self.LDA, self.recipe_ingredient_matrix, self.tfidf_vect)
+    #     save_file = 'lda-results.html'
+    #     pyLDAvis.save_html(topic_viz, save_file)
+    #     webbrowser.open('file://' + os.path.realpath(save_file))
+    #     time.sleep(1)
+    #     os.remove(save_file)
 
-    def pickle_model(self, lda_file="lda.pickle"):
-        with open(lda_file, "wb") as f:
-            print(f"Saving LDA model to {lda_file}...")
-            pickle.dump(self.LDA, f)
+    # def visualize_recommendation(self):
+    #     try:
+    #         topic_dist = np.squeeze(np.asarray(self.input_ingredients_topic_dist))
+    #         topics = [f"Topic {i}" for i in range(1, len(topic_dist)+1)]
+    #         df = pd.DataFrame({'topics': topics, 'probability': topic_dist})
+    #         fig = px.line_polar(df, r="probability", theta="topics", line_close=True,
+    #                       color_discrete_sequence=px.colors.sequential.Plasma_r, template="plotly_dark")
+    #         fig.show()
+    #     except AttributeError:
+    #         raise AttributeError("User must first call class method `get_recommendations` before viewing visualization")
+
+    # def pickle_model(self, lda_file="pickles/lda.pickle"):
+    #     with open(lda_file, "wb") as f:
+    #         print(f"Saving LDA model to {lda_file}...")
+    #         pickle.dump(self.LDA, f)
+
+
+        
 
 
 # if __name__ == "__main__":
@@ -174,8 +165,8 @@ class RecipeRecommender:
 #     query = ["pepper", "chicken", "salt", "vinegar", "tomato", "cheese"]
 
 #     rr.get_recommendations(query)
-#     rr.visualize_fit()
-#     rr.visualize_recommendation()
+#     # rr.visualize_fit()
+#     # rr.visualize_recommendation()
 
 
 
