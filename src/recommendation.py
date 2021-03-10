@@ -12,7 +12,7 @@ import plotly.express as px
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
 
-from helpers import DataFormatError, QueryError, is_valid_recipe_df
+from .helpers import DataFormatError, QueryError, is_valid_recipe_df
 
 
 # urls to pickled objects on github

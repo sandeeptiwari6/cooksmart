@@ -1,1 +1,1 @@
-#from recommendation import RecipeRecommender
+from .recommendation import RecipeRecommender
