@@ -112,14 +112,14 @@ class test_rr_similarity(unittest.TestCase):
 
     def test_score_array(self):
         r = rr()
-        r.recipe_topic_dist = np.matrix([[0.3, 0.2, 0.2, 0.1, 0.2],
-                                         [0.2, 0.1, 0.4, 0.3, 0],
-                                         [0, 0.5, 0.1, 0.4, 0]])
-        r.title_topic_dist = np.matrix([[0.4, 0.1, 0.1, 0.2, 0.2],
-                                        [0.15, 0.15, 0.4, 0.3, 0],
-                                        [0, 0.4, 0.2, 0.4, 0]])
+        r.recipe_topic_dist = np.array([[0.3, 0.2, 0.2, 0.1, 0.2],
+                                        [0.2, 0.1, 0.4, 0.3, 0],
+                                        [0, 0.5, 0.1, 0.4, 0]])
+        r.title_topic_dist = np.array([[0.4, 0.1, 0.1, 0.2, 0.2],
+                                       [0.15, 0.15, 0.4, 0.3, 0],
+                                       [0, 0.4, 0.2, 0.4, 0]])
 
-        r.input_ingredients_topic_dist = np.matrix([[0.3, 0.2, 0.2, 0.1, 0.2]])
+        r.input_ingredients_topic_dist = np.array([[0.3, 0.2, 0.2, 0.1, 0.2]])
 
         score = r.recipe_similarity()
         self.assertEqual(len(score), 3)

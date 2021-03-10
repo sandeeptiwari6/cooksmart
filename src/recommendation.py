@@ -83,13 +83,13 @@ class RecipeRecommender:
             with open('pickles/title_topics.pickle', 'rb') as f:
                 self.title_topic_dist = pickle.load(f)
             # save as pickle
-            self.recipe_topic_dist = np.matrix(self.LDA.transform(
+            self.recipe_topic_dist = np.array(self.LDA.transform(
                                                 self.recipe_ingredient_matrix))
         else:
             self.LDA = LatentDirichletAllocation(n_components=n_components,
                                                  random_state=42)
             self.LDA.fit_transform(self.recipe_ingredient_matrix)
-            self.recipe_topic_dist = np.matrix(self.LDA.transform(
+            self.recipe_topic_dist = np.array(self.LDA.transform(
                                                 self.recipe_ingredient_matrix))
             self.title_topic_dist = self.LDA.transform(self.title_tfidf)
 
@@ -104,8 +104,8 @@ class RecipeRecommender:
         Output:
         scores (np.array)
         """
-        scores = self.recipe_topic_dist * self.input_ingredients_topic_dist.T * w_text
-        scores += self.title_topic_dist * self.input_ingredients_topic_dist.T * w_title
+        scores = self.recipe_topic_dist @ self.input_ingredients_topic_dist.T * w_text
+        scores += self.title_topic_dist @ self.input_ingredients_topic_dist.T * w_title
 
         # TODO: try other similarities, normalize scores?
         scores = np.squeeze(np.asarray(scores))
@@ -129,7 +129,7 @@ class RecipeRecommender:
 
         input_ingredients_tfidf = self.tfidf_vect.transform(
                                                 [' '.join(input_ingredients)])
-        self.input_ingredients_topic_dist = np.matrix(self.LDA.transform(
+        self.input_ingredients_topic_dist = np.array(self.LDA.transform(
                                                 input_ingredients_tfidf))
         scores = self.recipe_similarity()
         sorted_index = np.argsort(scores)[::-1]
