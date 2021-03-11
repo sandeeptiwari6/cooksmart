@@ -80,11 +80,11 @@ Once the download is complete, you should be able to import and use the Cooksmar
 
 import Cooksmart-recommender-system
 
-This will import all of the functions included in the package which can then be called using the below command:
+This will import all of the functions included in the package which can then be called using the Cooksmart-recommender-system.RecipeRecommender() command to generate recipe recommendations. Simply enter the list of ingredients of your choice. The end result is a list of recipe recommendations that has the recipe name, ingredients and cooking direction.
 
-Cooksmart-recommender-system.RecipeRecommender()
 
-### Retrieve recommendations
+
+### Example
 
 - Use the sample.py file which contains the code to download, install and import the function from the package.
 - Enter the list of ingredients for which you would need the recipe.
@@ -94,6 +94,11 @@ Cooksmart-recommender-system.RecipeRecommender()
 
 - Keep running this code until you arrive at a desired set of recipes.
 - Enjoy cooking the recipe!! 
+
+
+## Limitations
+
+In its current form, the recommender system does not handle recommendations based on priority of the input ingredients which might produce undesired results. The util.py file handles basic data preprocessing and can be expanded further to accomadate advance functionalities to handle various recipe datasets outside our package. The package also does not have an UI interface which could make the interaction seamless for non technical users. 
 
 
 
