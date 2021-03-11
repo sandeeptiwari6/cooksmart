@@ -80,15 +80,15 @@ To install and use the recommender system, you can follow the below steps or ref
 
 3. To generate and retrieve the recipe recommendatiosn, use the command in the order lsited below:
    
-   ```rr = Cooksmart-recommender-system.RecipeRecommender()
-      rr.fit()
-      query = ["pepper", "chicken", "salt", "vinegar", "tomato", "cheese"]
-      rr.get_recommendations(query)
-      rr.visualize_fit()
-      rr.visualize_recommendation()```
-  
+   ```
+   rr = Cooksmart-recommender-system.RecipeRecommender()
+   rr.fit()
+   query = ["pepper", "chicken", "salt", "vinegar", "tomato", "cheese"]
+   rr.get_recommendations(query)
+   rr.visualize_fit()
+   rr.visualize_recommendation()
+   ```
   Simply change the list of ingredients of your choice in the query. The end result is a list of recipe recommendations that has the recipe name, ingredients and cooking directions.
-
 
 
 ### Example
