@@ -66,15 +66,15 @@ To perform preprocessing on the data that is downloaded from the source, we will
 ## Project folder structure
 
 
-## Installations Required
+## Installation and user guide on how to use the Cooksmart-recommender-system
 
 To install the recommender system you will need to install the package and run the below command:
 
-python -m pip install --index-url https://test.pypi.org/simple/ Cooksmart-recommender-system
+```python -m pip install --index-url https://test.pypi.org/simple/ Cooksmart-recommender-system```
 
 Once the download is complete, you should be able to import and use the Cooksmart-recommender-system on your machine.
 
-## User guide on How to use the Cooksmart-recommender-system
+
 
 - Once the installation is complete, run the below command in python:
 
