@@ -76,8 +76,7 @@ class RecipeRecommender:
 
         Output: None
         """
-        self.n_components = n_components
-        if self.filepath is None and self.n_components == 10:
+        if self.filepath is None and n_components == 10:
             with open('pickles/lda.pickle', 'rb') as f:
                 self.LDA = pickle.load(f)
             with open('pickles/title_topics.pickle', 'rb') as f:
@@ -116,7 +115,7 @@ class RecipeRecommender:
         Takes in a string of space separated ingredients, and returns
         a dataframe of the recipes most "similar"
 
-        Input :
+        Input:
         input_ingredients (list of strings)
         n (int): number of recipes to return
         """
@@ -136,6 +135,10 @@ class RecipeRecommender:
         return self.data.iloc[sorted_index, :].head(n)
 
     def visualize_fit(self):
+        """
+        Opens browser with visualization of fitted LDA model.
+        :return: None
+        """
         topic_viz = pyLDAvis.sklearn.prepare(self.LDA,
                                              self.recipe_ingredient_matrix,
                                              self.tfidf_vect)
@@ -146,6 +149,10 @@ class RecipeRecommender:
         os.remove(save_file)
 
     def visualize_recommendation(self):
+        """
+        Opens browser with visualization of topic probability distribution of latest query.
+        :return: None
+        """
         try:
             topic_dist = np.squeeze(np.asarray(
                 self.input_ingredients_topic_dist))
@@ -160,9 +167,16 @@ class RecipeRecommender:
             raise AttributeError(" Call `get_recommendations` first")
 
     def pickle_model(self, lda_file="pickles/lda.pickle"):
+        """
+        Pickles current LDA model to filepath defined by user.
+        :param lda_file: filepath as string
+        :return: None
+        """
         with open(lda_file, "wb") as f:
             print(f"Saving LDA model to {lda_file}...")
             pickle.dump(self.LDA, f)
+
+
 # if __name__ == "__main__":
 #     rr = RecipeRecommender()
 #     rr.fit()
