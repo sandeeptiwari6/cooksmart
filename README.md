@@ -68,32 +68,39 @@ To perform preprocessing on the data that is downloaded from the source, we will
 
 ## Installation and user guide on how to use the Cooksmart-recommender-system
 
-To install the recommender system you will need to install the package and run the below command:
+To install and use the recommender system, you can follow the below steps or refer to the example section below.
 
-```python -m pip install --index-url https://test.pypi.org/simple/ Cooksmart-recommender-system```
+1. To use the recommender system you will first need to download and install the package by running the below command:
 
-Once the download is complete, you should be able to import and use the Cooksmart-recommender-system on your machine.
+   ```python -m pip install --index-url https://test.pypi.org/simple/ Cooksmart-recommender-system```
 
+2. Once the download and installation is complete, you should be able to import the Cooksmart-recommender-system package on your machine using the below command:
 
+   ```import Cooksmart-recommender-system```
 
-- Once the installation is complete, run the below command in python:
-
-import Cooksmart-recommender-system
-
-This will import all of the functions included in the package which can then be called using the Cooksmart-recommender-system.RecipeRecommender() command to generate recipe recommendations. Simply enter the list of ingredients of your choice. The end result is a list of recipe recommendations that has the recipe name, ingredients and cooking direction.
+3. To generate and retrieve the recipe recommendatiosn, use the command in the order lsited below:
+   
+   ```rr = Cooksmart-recommender-system.RecipeRecommender()
+      rr.fit()
+      query = ["pepper", "chicken", "salt", "vinegar", "tomato", "cheese"]
+      rr.get_recommendations(query)
+      rr.visualize_fit()
+      rr.visualize_recommendation()```
+  
+  Simply change the list of ingredients of your choice in the query. The end result is a list of recipe recommendations that has the recipe name, ingredients and cooking directions.
 
 
 
 ### Example
 
 - Use the sample.py file which contains the code to download, install and import the function from the package.
-- Enter the list of ingredients for which you would need the recipe.
+- Change the list of ingredients of your choice for which you would need the recipe and run the code.
 	   E.g.: "pepper", "chicken", "vinegar", "tomato", "cheese"
 - Voila!! This should result in some recipes like below –
 
 
-- Keep running this code until you arrive at a desired set of recipes.
-- Enjoy cooking the recipe!! 
+- Re-run the code until you arrive at a desired set of recipes.
+- Happy cooking!! 
 
 
 ## Limitations
