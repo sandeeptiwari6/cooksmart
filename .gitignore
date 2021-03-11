@@ -1,0 +1,10 @@
+*.com
+*.idea
+*.exe
+*.csv
+*.ipynb
+*.DS_Store
+*.xml
+*.pyc
+*.iml
+*.ipynb_checkpoints
