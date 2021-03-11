@@ -150,7 +150,8 @@ class RecipeRecommender:
 
     def visualize_recommendation(self):
         """
-        Opens browser with visualization of topic probability distribution of latest query.
+        Opens browser with visualization of topic probability distribution of
+        latest query.
         :return: None
         """
         try:
@@ -159,8 +160,8 @@ class RecipeRecommender:
             topics = [f"Topic {i}" for i in range(1, len(topic_dist)+1)]
             df = pd.DataFrame({'topics': topics, 'probability': topic_dist})
             fig = px.line_polar(df, r="probability", theta="topics",
-                                line_close=True, color_discrete_sequence=
-                                px.colors.sequential.Plasma_r,
+                                line_close=True, 
+                                color_discrete_sequence=px.colors.sequential.Plasma_r,
                                 template="plotly_dark")
             fig.show()
         except AttributeError:
