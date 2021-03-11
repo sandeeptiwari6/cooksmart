@@ -5,6 +5,9 @@ import os
 import webbrowser
 import time
 
+import io
+import requests
+
 import pyLDAvis
 import pyLDAvis.sklearn
 import plotly.express as px
@@ -12,16 +15,17 @@ import plotly.express as px
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
 
-from .helpers import DataFormatError, QueryError, is_valid_recipe_df
+from exception_errors import DataFormatError, QueryError
+from helpers import is_valid_recipe_df
 
 
 # urls to pickled objects on github
 urls = {
     "DATA_URL": "https://raw.githubusercontent.com/sandeeptiwari6/recommender-system-515/main/data/cleaned-data_recipe.csv",
-    "LDA_URL": "https://github.com/sandeeptiwari6/recommender-system-515/blob/main/src/pickles/lda.pickle?raw=true",
-    "TFIDF_URL": "https://github.com/sandeeptiwari6/recommender-system-515/blob/main/src/pickles/vectorizer.pickle?raw=true",
-    "REC_TOP_URL": "https://github.com/sandeeptiwari6/recommender-system-515/blob/main/src/pickles/recipe_topics.pickle?raw=true",
-    "TIT_TOP_URL": "https://github.com/sandeeptiwari6/recommender-system-515/blob/main/src/pickles/title_topics.pickle?raw=true"
+    "LDA_URL": "https://github.com/sandeeptiwari6/cooksmart/blob/main/cooksmart/pickles/lda.pickle?raw=true",
+    "TFIDF_URL": "https://github.com/sandeeptiwari6/cooksmart/blob/main/cooksmart/pickles/vectorizer.pickle?raw=true",
+    "REC_TOP_URL": "https://github.com/sandeeptiwari6/cooksmart/blob/main/cooksmart/pickles/recipe_topics.pickle?raw=true",
+    "TIT_TOP_URL": "https://github.com/sandeeptiwari6/cooksmart/blob/main/cooksmart/pickles/title_topics.pickle?raw=true"
 }
 
 
@@ -41,14 +45,15 @@ class RecipeRecommender:
         """
 
         self.filepath = filepath
-        self.tfidf_vect = TfidfVectorizer(max_df=max_df, min_df=min_df,
-                                          stop_words='english')
         if self.filepath is None:
-            self.data = pd.read_csv('../data/cleaned-data_recipe.csv')
-            with open('pickles/recipe_topics.pickle', 'rb') as f:
-                self.recipe_ingredient_matrix = pickle.load(f)
-            with open('pickles/vectorizer.pickle', 'rb') as f:
-                self.tfidf_vect = pickle.load(f)
+            self.data = pd.read_csv(urls["DATA_URL"], error_bad_lines=False)
+
+            rec_file = io.BytesIO(requests.get(urls["REC_TOP_URL"]).content)
+            self.recipe_ingredient_matrix = pickle.load(rec_file)
+
+            vec_file = io.BytesIO(requests.get(urls["TFIDF_URL"]).content)
+            self.tfidf_vect = pickle.load(vec_file)
+
             self.title_tfidf = self.tfidf_vect.transform(
                 self.data['recipe_name'])
 
@@ -63,6 +68,8 @@ class RecipeRecommender:
 
             self.recipe_ingredient_matrix = self.tfidf_vect.fit_transform(
                 self.data['ingredients'].values.astype('U'))
+            self.tfidf_vect = TfidfVectorizer(max_df=max_df, min_df=min_df,
+                                              stop_words='english')
             self.title_tfidf = self.tfidf_vect.transform(
                                             self.data['recipe_name'])
 
@@ -77,10 +84,12 @@ class RecipeRecommender:
         Output: None
         """
         if self.filepath is None and n_components == 10:
-            with open('pickles/lda.pickle', 'rb') as f:
-                self.LDA = pickle.load(f)
-            with open('pickles/title_topics.pickle', 'rb') as f:
-                self.title_topic_dist = pickle.load(f)
+            lda_file = io.BytesIO(requests.get(urls["LDA_URL"]).content)
+            self.LDA = pickle.load(lda_file)
+
+            top_dist_file = io.BytesIO(requests.get(urls["TIT_TOP_URL"]).content)
+            self.title_topic_dist = pickle.load(top_dist_file)
+
             # save as pickle
             self.recipe_topic_dist = np.array(self.LDA.transform(
                                                 self.recipe_ingredient_matrix))
@@ -178,11 +187,14 @@ class RecipeRecommender:
             pickle.dump(self.LDA, f)
 
 
-# if __name__ == "__main__":
-#     rr = RecipeRecommender()
-#     rr.fit()
-#     query = ["pepper", "chicken", "salt", "vinegar", "tomato", "cheese"]
-
-#     rr.get_recommendations(query)
-#     # rr.visualize_fit()
-#     # rr.visualize_recommendation()
+if __name__ == "__main__":
+    rr = RecipeRecommender()
+    # print(rr.data)
+    # print(rr.recipe_ingredient_matrix)
+    # print(rr.tfidf_vect)
+    rr.fit()
+    query = ["pepper", "chicken", "salt", "vinegar", "tomato", "cheese"]
+    #
+    print(rr.get_recommendations(query, 10))
+    # rr.visualize_fit()
+    # rr.visualize_recommendation()
