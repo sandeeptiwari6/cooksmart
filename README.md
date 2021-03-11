@@ -4,7 +4,15 @@
 
 ## Introduction 
 
-Many factors influence the meals being cooked at home today. People are always on the lookout for inspiration to cook something new provided they have the time, interest, creativity and the ingredients at hand. Knowing what different recipes one can cook given a list of ingredients is one of the constant and colossal challenges in life. The goal of this project is to use the recipe dataset available in kaggle to build a recipe recommendation system that allows users to search for recipes based on the ingredients list. 
+The goal of this project is to use the recipe dataset available in kaggle to build a recipe recommendation system that allows users to search for recipes based on the ingredients list. The recipe dataset is cleaned and parsed using a util file. Using the cleaned dataset, the recommendation system will perform unsupervised topic modeling on the recipes by vectorizing the recipe name, ingredients and user-input ingredients list using TF-IDF. The vectorized representations are then provided as an input to the LDA model to generate a topic probability distribution. Finally, a similarity score is generated for each recipe in the dataset based on the user-input ingredients list and the recipes are recommended based on highest scores. 
+
+
+## Objective
+
+- Given any recipe dataset, build a model to find the most relevant recipes that match the user’s ingredients list.
+- Perform unsupervised Topic Modeling on the recipes to group recipes into topics.
+- Rank the ingredients based on its frequency i.e. each successive ingredient in the list is weighted incrementally less.
+- Create a search algorithm that utilizes similarity scoring to rank recipes according to the greatest similarity to the user-input list of ingredients and returns recipe recommendations based on the scores. 
 
 
 ## Dataset Description:
@@ -24,16 +32,21 @@ The kaggle dataset used for our recommendation system was created by scraping Al
 | reviews | string | Reviews associated with the recipe |
 
 
-## Objective
+## Dataset Requirements for any new recipe datasets
 
-- Given any recipe dataset, build a model to find the most relevant recipes that match the user’s ingredients list.
-- Perform unsupervised Topic Modeling on the recipes to group recipes into topics.
-- Rank the ingredients based on its frequency i.e. each successive ingredient in the list is weighted incrementally less.
-- Create a search algorithm that utilizes similarity scoring to rank recipes according to the greatest similarity to the user-input list of ingredients and returns recipe recommendations based on the scores. 
+Incase you decide to use your own dataset other than the one listed above, please make sure your dataset meets the following requirements:
 
-## Put the architechture here 
+| Column | Datatype | Required |
+| ------ | -------- | -------- |
+| recipe_name | string | Yes |
+| ingredients | list of strings seperated by comma | Yes |
+| cooking_directions | string | Yes |
 
-The overall architechture is visually summarized above. The recipe dataset is cleaned and parsed using a util file. Using the cleaned dataset, the recommendation system will perform unsupervised topic modeling on the recipes by vectorizing the recipe name, ingredients and user-input ingredients list using TF-IDF. The vectorized representations are then provided as an input to the LDA model to generate a topic probability distribution. Finally, a similarity score is generated for each recipe in the dataset based on the user-input ingredients list and the recipes are recommended based on highest scores. 
+If any of the above columns are not available or if there is a column name or data type mismatch the recommender function will fail.
+
+## Data Preprocessing
+
+To perform preprocessing on the data that is downloaded from the source, we will use the utils.py file. The filepath of the raw data along with the column names are passed to the utils which performs some basic preprocessing and outputs csv file which is saved as cleaned_data.csv in the data folder.
 
 ## Features
 
@@ -49,13 +62,55 @@ The overall architechture is visually summarized above. The recipe dataset is cl
 #### - Option to rank ingredients in order of ingredients. i.e. each successive ingredient in list is weighted incrementally less in the search query??
 #### - what else??
 
-## Installations Required
 
-## Packages used
-
-- pandas version 1.0.3
-- numpy version 1.18.1
+## Project folder structure
 
 
-## License Information
+## Installation and user guide on how to use the Cooksmart-recommender-system
+
+To install and use the recommender system, you can follow the below steps or refer to the example section below.
+
+1. To use the recommender system you will first need to download and install the package by running the below command:
+
+   ```python -m pip install --index-url https://test.pypi.org/simple/ Cooksmart-recommender-system```
+
+2. Once the download and installation is complete, you should be able to import the Cooksmart-recommender-system package on your machine using the below command:
+
+   ```import Cooksmart-recommender-system```
+
+3. To generate and retrieve the recipe recommendatiosn, use the command in the order lsited below:
+   
+   ```
+   rr = Cooksmart-recommender-system.RecipeRecommender()
+   rr.fit()
+   query = ["pepper", "chicken", "salt", "vinegar", "tomato", "cheese"]
+   rr.get_recommendations(query)
+   rr.visualize_fit()
+   rr.visualize_recommendation()
+   ```
+  Simply change the list of ingredients of your choice in the query. The end result is a list of recipe recommendations that has the recipe name, ingredients and cooking directions.
+
+
+### Example
+
+- Use the sample.py file which contains the code to download, install and import the function from the package.
+- Change the list of ingredients of your choice for which you would need the recipe and run the code.
+	   E.g.: "pepper", "chicken", "vinegar", "tomato", "cheese"
+- Voila!! This should result in some recipes like below –
+
+
+- Re-run the code until you arrive at a desired set of recipes.
+- Happy cooking!! 
+
+
+## Limitations
+
+In its current form, the recommender system does not handle recommendations based on priority of the input ingredients which might produce undesired results. The util.py file handles basic data preprocessing and can be expanded further to accomadate advance functionalities to handle various recipe datasets outside our package. The package also does not have an UI interface which could make the interaction seamless for non technical users. 
+
+
+
+
+
+
+
 
