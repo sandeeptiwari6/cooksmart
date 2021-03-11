@@ -32,7 +32,7 @@ The kaggle dataset used for our recommendation system was created by scraping Al
 | reviews | string | Reviews associated with the recipe |
 
 
-## Dataset Requirements that need to be met for new datasets
+## Dataset Requirements new recipe datasets
 
 Incase you decide to use your own dataset other than the one listed above, please make sure your dataset meets the following requirements:
 
@@ -43,6 +43,10 @@ Incase you decide to use your own dataset other than the one listed above, pleas
 | cooking_directions | string | Yes |
 
 If any of the above columns are not available or if there is a column name or data type mismatch the recommender function will fail.
+
+## Data Preprocessing
+
+To perform preprocessing on the data that is downloaded from the source, we will use the utils.py file. The filepath of the raw data along with the column names are passed to the utils which performs some basic preprocessing and outputs csv file which is saved as cleaned_data.csv in the data folder.
 
 ## Features
 
@@ -79,6 +83,18 @@ import Cooksmart-recommender-system
 This will import all of the functions included in the package which can then be called using the below command:
 
 Cooksmart-recommender-system.RecipeRecommender()
+
+### Retrieve recommendations
+
+- Use the sample.py file which contains the code to download, install and import the function from the package.
+- Enter the list of ingredients for which you would need the recipe.
+	   E.g.: "pepper", "chicken", "vinegar", "tomato", "cheese"
+- Voila!! This should result in some recipes like below –
+
+
+- Keep running this code until you arrive at a desired set of recipes.
+- Enjoy cooking the recipe!! 
+
 
 
 
