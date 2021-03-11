@@ -32,7 +32,7 @@ The kaggle dataset used for our recommendation system was created by scraping Al
 | reviews | string | Reviews associated with the recipe |
 
 
-## Dataset Requirements new recipe datasets
+## Dataset Requirements for any new recipe datasets
 
 Incase you decide to use your own dataset other than the one listed above, please make sure your dataset meets the following requirements:
 
