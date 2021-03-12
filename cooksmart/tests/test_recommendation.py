@@ -5,7 +5,7 @@ from unittest.mock import Mock, patch
 import os
 import pandas as pd
 import numpy as np
-from cooksmart.constants import urls
+
 
 class test_rr_initialization(unittest.TestCase):
     # invalid file path
