@@ -9,6 +9,13 @@ import numpy as np
 
 class test_rr_initialization(unittest.TestCase):
 
+    def setupClass():
+        data = {'recipe_name': ['Chicken dish', 'pasta'],
+                'ingredients': ["chicken", "pasta"],
+                'cooking_directions': ["1", "2"]}
+        data = pd.DataFrame(data)
+        data.to_csv("test.csv")
+
     # invalid file path
     def test_filepath(self):
         self.assertRaises(FileNotFoundError, rr, "invalid.csv")
@@ -16,7 +23,7 @@ class test_rr_initialization(unittest.TestCase):
     # invalid column names
     def test_invalid_format(self):
         data = {'recipe_name': ['Chicken dish', 'pasta'],
-                'ingredients': ["chiecken", "pasta"]}
+                'ingredients': ["chicken", "pasta"]}
         data = pd.DataFrame(data)
         data.to_csv("invalid_data_format.csv")
         self.assertRaises(DataFormatError, rr, "invalid_data_format.csv")
@@ -27,35 +34,41 @@ class test_rr_initialization(unittest.TestCase):
         r = rr()
         self.assertEqual(len(r.data), r.recipe_ingredient_matrix.shape[0])
 
-        r = rr('../../data/cleaned-data_recipe.csv')
+        r = rr('test.csv')
         self.assertEqual(len(r.data), r.recipe_ingredient_matrix.shape[0])
 
     def test_title_tfidf(self):
         r = rr()
         self.assertEqual(len(r.data), r.title_tfidf.shape[0])
 
-        r = rr('../../data/cleaned-data_recipe.csv')
+        r = rr('test.csv')
         self.assertEqual(len(r.data), r.title_tfidf.shape[0])
 
 
 class test_rr_fit(unittest.TestCase):
+    def setupClass():
+        data = {'recipe_name': ['Chicken dish', 'pasta'],
+                'ingredients': ["chicken", "pasta"],
+                'cooking_directions': ["1","2"]}
+        data = pd.DataFrame(data)
+        data.to_csv("test.csv")
 
     # provide filepath - LDA should be called once
-    @patch('recommendation.LatentDirichletAllocation')
+    @patch('cooksmart.recommendation.LatentDirichletAllocation')
     def test_LDA_calls1(self, mock_A):
-        r = rr('../../data/cleaned-data_recipe.csv')
+        r = rr('test.csv')
         r.fit()
         self.assertEqual(mock_A.call_count, 1)
 
     # provide no filepath - LDA should be called zero times
-    @patch('recommendation.LatentDirichletAllocation')
+    @patch('cooksmart.recommendation.LatentDirichletAllocation')
     def test_LDA_calls2(self, mock_A):
         r = rr()
         r.fit()
         self.assertEqual(mock_A.call_count, 0)
 
     # change default num topics - LDA should be called once
-    @patch('recommendation.LatentDirichletAllocation')
+    @patch('cooksmart.recommendation.LatentDirichletAllocation')
     def test_LDA_calls3(self, mock_A):
         r = rr()
         r.fit(n_components=5)
@@ -92,7 +105,7 @@ class test_rr_get_recommendations(unittest.TestCase):
         with self.assertRaises(QueryError):
             rr.get_recommendations(self, ["1", "2"])
 
-    @patch("recommendation.RecipeRecommender.recipe_similarity")
+    @patch("cooksmart.recommendation.RecipeRecommender.recipe_similarity")
     def test_similarity_call(self, mock_similarity):
         r = rr()
         r.fit()
@@ -127,10 +140,10 @@ class test_rr_similarity(unittest.TestCase):
 
 class test_rr_visualize_fit(unittest.TestCase):
     # pyLDAvis should be called once
-    @patch('recommendation.pyLDAvis.sklearn.prepare')
-    @patch('recommendation.pyLDAvis.save_html')
-    @patch('recommendation.os.remove')
-    @patch('recommendation.webbrowser')
+    @patch('cooksmart.recommendation.pyLDAvis.sklearn.prepare')
+    @patch('cooksmart.recommendation.pyLDAvis.save_html')
+    @patch('cooksmart.recommendation.os.remove')
+    @patch('cooksmart.recommendation.webbrowser')
     def test_pyLDAvis_calls1(self, mock_web, mock_os, mock_save, mock_prepare):
         r = rr()
         r.fit()
@@ -146,7 +159,7 @@ class test_rr_visualize_recommendation(unittest.TestCase):
         with self.assertRaises(AttributeError):
             r.visualize_recommendation()
 
-    @patch('recommendation.px.line_polar')
+    @patch('cooksmart.recommendation.px.line_polar')
     def test_fig_show(self, mock_show):
         r = rr()
         r.fit()
@@ -158,7 +171,7 @@ class test_rr_visualize_recommendation(unittest.TestCase):
 
 
 class test_rr_pickle(unittest.TestCase):
-    @patch('recommendation.pickle.dump')
+    @patch('cooksmart.recommendation.pickle.dump')
     def test_pickle(self, mock_dump):
         r = rr()
         r.LDA = Mock()

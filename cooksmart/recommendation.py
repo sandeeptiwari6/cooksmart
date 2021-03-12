@@ -16,16 +16,16 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
 
 # local module imports
-from exception_errors import DataFormatError, QueryError
-from helpers import is_valid_recipe_df
-from constants import urls
+from cooksmart.exception_errors import DataFormatError, QueryError
+from cooksmart.helpers import is_valid_recipe_df
+from cooksmart.constants import urls
 
 
 class RecipeRecommender:
     def __init__(self, filepath=None, max_df=0.6, min_df=2):
         """
         Creates an instance of Recipe Recommender
-        Initialises : filepath, tfidf_vect, data, recipe_ingredient_matrix, 
+        Initialises : filepath, tfidf_vect, data, recipe_ingredient_matrix,
         title_tfidf
         Reads in formatted csv file and vectorize recipes
         Input:
@@ -54,11 +54,10 @@ class RecipeRecommender:
                 raise FileNotFoundError(
                     f"{filepath} is not a valid path to a dataset")
             self.data = pd.read_csv(filepath)
-       
+
             if not is_valid_recipe_df(self.data):
                 raise DataFormatError("Inputted csv is incorrectly formatted")
 
-            
             self.tfidf_vect = TfidfVectorizer(max_df=max_df, min_df=min_df,
                                               stop_words='english')
             self.recipe_ingredient_matrix = self.tfidf_vect.fit_transform(
@@ -80,7 +79,8 @@ class RecipeRecommender:
             lda_file = io.BytesIO(requests.get(urls["LDA_URL"]).content)
             self.LDA = pickle.load(lda_file)
 
-            top_dist_file = io.BytesIO(requests.get(urls["TIT_TOP_URL"]).content)
+            top_dist_file = io.BytesIO(
+                requests.get(urls["TIT_TOP_URL"]).content)
             self.title_topic_dist = pickle.load(top_dist_file)
 
             # save as pickle
