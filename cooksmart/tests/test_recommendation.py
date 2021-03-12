@@ -5,17 +5,9 @@ from unittest.mock import Mock, patch
 import os
 import pandas as pd
 import numpy as np
-
+from cooksmart.constants import urls
 
 class test_rr_initialization(unittest.TestCase):
-
-    def setupClass():
-        data = {'recipe_name': ['Chicken dish', 'pasta'],
-                'ingredients': ["chicken", "pasta"],
-                'cooking_directions': ["1", "2"]}
-        data = pd.DataFrame(data)
-        data.to_csv("test.csv")
-
     # invalid file path
     def test_filepath(self):
         self.assertRaises(FileNotFoundError, rr, "invalid.csv")
@@ -34,29 +26,22 @@ class test_rr_initialization(unittest.TestCase):
         r = rr()
         self.assertEqual(len(r.data), r.recipe_ingredient_matrix.shape[0])
 
-        r = rr('test.csv')
+        r = rr("cooksmart/tests/test.csv")
         self.assertEqual(len(r.data), r.recipe_ingredient_matrix.shape[0])
 
     def test_title_tfidf(self):
         r = rr()
         self.assertEqual(len(r.data), r.title_tfidf.shape[0])
 
-        r = rr('test.csv')
+        r = rr("cooksmart/tests/test.csv")
         self.assertEqual(len(r.data), r.title_tfidf.shape[0])
 
 
 class test_rr_fit(unittest.TestCase):
-    def setupClass():
-        data = {'recipe_name': ['Chicken dish', 'pasta'],
-                'ingredients': ["chicken", "pasta"],
-                'cooking_directions': ["1","2"]}
-        data = pd.DataFrame(data)
-        data.to_csv("test.csv")
-
     # provide filepath - LDA should be called once
     @patch('cooksmart.recommendation.LatentDirichletAllocation')
     def test_LDA_calls1(self, mock_A):
-        r = rr('test.csv')
+        r = rr("cooksmart/tests/test.csv")
         r.fit()
         self.assertEqual(mock_A.call_count, 1)
 

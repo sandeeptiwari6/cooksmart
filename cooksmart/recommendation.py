@@ -53,7 +53,7 @@ class RecipeRecommender:
             if not os.path.exists(filepath):
                 raise FileNotFoundError(
                     f"{filepath} is not a valid path to a dataset")
-            self.data = pd.read_csv(filepath)
+            self.data = pd.read_csv(filepath, error_bad_lines=False)
 
             if not is_valid_recipe_df(self.data):
                 raise DataFormatError("Inputted csv is incorrectly formatted")
