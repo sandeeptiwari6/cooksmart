@@ -1,6 +1,6 @@
 import unittest
-from recommendation import RecipeRecommender as rr
-from helpers import DataFormatError, QueryError
+from cooksmart.recommendation import RecipeRecommender as rr
+from cooksmart.exception_errors import DataFormatError, QueryError
 from unittest.mock import Mock, patch
 import os
 import pandas as pd
@@ -27,14 +27,14 @@ class test_rr_initialization(unittest.TestCase):
         r = rr()
         self.assertEqual(len(r.data), r.recipe_ingredient_matrix.shape[0])
 
-        r = rr('../data/cleaned-data_recipe.csv')
+        r = rr('../../data/cleaned-data_recipe.csv')
         self.assertEqual(len(r.data), r.recipe_ingredient_matrix.shape[0])
 
     def test_title_tfidf(self):
         r = rr()
         self.assertEqual(len(r.data), r.title_tfidf.shape[0])
 
-        r = rr('../data/cleaned-data_recipe.csv')
+        r = rr('../../data/cleaned-data_recipe.csv')
         self.assertEqual(len(r.data), r.title_tfidf.shape[0])
 
 
@@ -43,7 +43,7 @@ class test_rr_fit(unittest.TestCase):
     # provide filepath - LDA should be called once
     @patch('recommendation.LatentDirichletAllocation')
     def test_LDA_calls1(self, mock_A):
-        r = rr('../data/cleaned-data_recipe.csv')
+        r = rr('../../data/cleaned-data_recipe.csv')
         r.fit()
         self.assertEqual(mock_A.call_count, 1)
 
@@ -65,14 +65,14 @@ class test_rr_fit(unittest.TestCase):
     def test_recipe_topic_distribution(self):
         r = rr()
         r.fit()
-        self.assertEqual(r.n_components, r.recipe_topic_dist.shape[1])
+        self.assertEqual(10, r.recipe_topic_dist.shape[1])
         self.assertEqual(len(r.data), r.recipe_topic_dist.shape[0])
 
     # title topic distribution
     def test_title_topic_distribution(self):
         r = rr()
         r.fit()
-        self.assertEqual(r.n_components, r.title_topic_dist.shape[1])
+        self.assertEqual(10, r.title_topic_dist.shape[1])
         self.assertEqual(len(r.data), r.title_topic_dist.shape[0])
 
 

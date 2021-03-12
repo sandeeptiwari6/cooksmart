@@ -105,8 +105,10 @@ class RecipeRecommender:
         Output:
         scores (np.array)
         """
-        scores = self.recipe_topic_dist @ self.input_ingredients_topic_dist.T * w_text
-        scores += self.title_topic_dist @ self.input_ingredients_topic_dist.T * w_title
+        scores = (self.recipe_topic_dist @ self.input_ingredients_topic_dist.T
+                  * w_text)
+        scores += (self.title_topic_dist @ self.input_ingredients_topic_dist.T
+                   * w_title)
 
         # TODO: try other similarities, normalize scores?
         scores = np.squeeze(np.asarray(scores))
@@ -161,10 +163,11 @@ class RecipeRecommender:
                 self.input_ingredients_topic_dist))
             topics = [f"Topic {i}" for i in range(1, len(topic_dist)+1)]
             df = pd.DataFrame({'topics': topics, 'probability': topic_dist})
-            fig = px.line_polar(df, r="probability", theta="topics",
-                                line_close=True,
-                                color_discrete_sequence=px.colors.sequential.Plasma_r,
-                                template="plotly_dark")
+            fig = px.line_polar(
+                df, r="probability", theta="topics",
+                line_close=True,
+                color_discrete_sequence=px.colors.sequential.Plasma_r,
+                template="plotly_dark")
             fig.show()
         except AttributeError:
             raise AttributeError(" Call `get_recommendations` first")
