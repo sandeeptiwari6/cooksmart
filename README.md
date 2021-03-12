@@ -17,7 +17,7 @@ The goal of this project is to use the recipe dataset available in kaggle to bui
 
 ## Dataset Description:
 
-The kaggle dataset used for our recommendation system was created by scraping AllRecipes.com, a popular social network recipe site. For each recipe, the dataset contains a corresponding row with recipe id, name, average ratings of reviewers, image url, review nums, ingredients, cooking directions, nutritions, and reviews. . We have pre-filtered the dataset to exclude records which contains repeated ingredients, no images or zero reviews to ensure data quality. The final dataset includes 49,698 recipes with 38,131 ingredients representing a varied range of cuisines and tastes. Given below is the description of the columns available in the dataset.
+The kaggle dataset used for our recommendation system was created by scraping AllRecipes.com, a popular social network recipe site. For each recipe, the dataset contains a corresponding row with recipe id, name, average ratings of reviewers, image url, review nums, ingredients, cooking directions, nutritions, and reviews. We have pre-filtered the dataset to exclude records which contains repeated ingredients, no images or zero reviews to ensure data quality. The final dataset includes 49,698 recipes with 38,131 ingredients representing a varied range of cuisines and tastes. Given below is the description of the columns available in the dataset.
 
 | Column | Datatype | Value |
 | ------ | -------- | ----- |
