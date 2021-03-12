@@ -7,7 +7,7 @@ python:
 # what branches should be evaluated
 branches:
     only:
-        - master
+        - main
 
 # list of commands to run to setup the environment
 install:
