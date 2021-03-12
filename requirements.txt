@@ -40,7 +40,6 @@ pycurl==7.43.0.6
 pyczmq==0.0.4
 pyLDAvis==3.2.2
 PyOpenGL==3.1.5
-PyQt4==4.11.4
 PyQt5==5.15.4
 PySide==1.2.4
 PySide2==5.15.2
