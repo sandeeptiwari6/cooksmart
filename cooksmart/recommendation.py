@@ -58,10 +58,11 @@ class RecipeRecommender:
             if not is_valid_recipe_df(self.data):
                 raise DataFormatError("Inputted csv is incorrectly formatted")
 
-            self.recipe_ingredient_matrix = self.tfidf_vect.fit_transform(
-                self.data['ingredients'].values.astype('U'))
+            
             self.tfidf_vect = TfidfVectorizer(max_df=max_df, min_df=min_df,
                                               stop_words='english')
+            self.recipe_ingredient_matrix = self.tfidf_vect.fit_transform(
+                self.data['ingredients'].values.astype('U'))
             self.title_tfidf = self.tfidf_vect.transform(
                                             self.data['recipe_name'])
 
@@ -161,7 +162,7 @@ class RecipeRecommender:
             topics = [f"Topic {i}" for i in range(1, len(topic_dist)+1)]
             df = pd.DataFrame({'topics': topics, 'probability': topic_dist})
             fig = px.line_polar(df, r="probability", theta="topics",
-                                line_close=True, 
+                                line_close=True,
                                 color_discrete_sequence=px.colors.sequential.Plasma_r,
                                 template="plotly_dark")
             fig.show()
