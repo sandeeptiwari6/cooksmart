@@ -1,1 +1,3 @@
-# from .recommendation import RecipeRecommender
+from .recommendation import RecipeRecommender
+
+__all__ = ['RecipeRecommender', ]
