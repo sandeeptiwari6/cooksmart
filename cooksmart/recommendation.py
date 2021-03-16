@@ -75,7 +75,7 @@ class RecipeRecommender:
 
         Output: None
         """
-        if self.filepath is None:
+        if self.filepath is None and n_components == 10:
             lda_file = io.BytesIO(requests.get(urls["LDA_URL"]).content)
             self.LDA = pickle.load(lda_file)
 
