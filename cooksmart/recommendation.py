@@ -75,7 +75,7 @@ class RecipeRecommender:
 
         Output: None
         """
-        if self.filepath is None and n_components == 10:
+        if self.filepath is None:
             lda_file = io.BytesIO(requests.get(urls["LDA_URL"]).content)
             self.LDA = pickle.load(lda_file)
 
@@ -114,7 +114,7 @@ class RecipeRecommender:
         scores = np.squeeze(np.asarray(scores))
         return scores
 
-    def get_recommendations(self, input_ingredients: list, n=3):
+    def get_recommendations(self, input_ingredients: list, n=10):
         """
         Takes in a string of space separated ingredients, and returns
         a dataframe of the recipes most "similar"
@@ -149,7 +149,7 @@ class RecipeRecommender:
         save_file = 'lda-results.html'
         pyLDAvis.save_html(topic_viz, save_file)
         webbrowser.open('file://' + os.path.realpath(save_file))
-        time.sleep(1)
+        time.sleep(3)
         os.remove(save_file)
 
     def visualize_recommendation(self):
@@ -168,6 +168,7 @@ class RecipeRecommender:
                 line_close=True,
                 color_discrete_sequence=px.colors.sequential.Plasma_r,
                 template="plotly_dark")
+            self.visualize_fit()
             fig.show()
         except AttributeError:
             raise AttributeError(" Call `get_recommendations` first")
@@ -181,16 +182,3 @@ class RecipeRecommender:
         with open(lda_file, "wb") as f:
             print(f"Saving LDA model to {lda_file}...")
             pickle.dump(self.LDA, f)
-
-
-if __name__ == "__main__":
-    rr = RecipeRecommender()
-    # print(rr.data)
-    # print(rr.recipe_ingredient_matrix)
-    # print(rr.tfidf_vect)
-    rr.fit()
-    query = ["pepper", "chicken", "salt", "vinegar", "tomato", "cheese"]
-    #
-    print(rr.get_recommendations(query, 10))
-    # rr.visualize_fit()
-    # rr.visualize_recommendation()
