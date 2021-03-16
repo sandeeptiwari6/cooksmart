@@ -78,7 +78,7 @@ To install and use the recommender system, you can follow the below steps or ref
 	```python setup.py install```
 
 
-4. Once the download and installation is complete, you should be able to import the Cooksmart-recommender-system package on your machine using the below command:
+4. Once the download and installation is complete, you should be able to import the cooksmart package in python using the below command:
 
    ```import cooksmart```
 
