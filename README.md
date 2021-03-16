@@ -48,30 +48,21 @@ If any of the above columns are not available or if there is a column name or da
 
 To perform preprocessing on the data that is downloaded from the source, we will use the utils.py file. The filepath of the raw data along with the column names are passed to the utils which performs some basic preprocessing and outputs csv file which is saved as cleaned_data.csv in the data folder.
 
-## Features
-
-### Data Features:
+## Data Features:
 
 - Recipe Name
 - Ingredients
 - Cooking Directions
 
-### Model Features:
-
-- Search based on ingredients list (e.g.: [ingredient 1, ingredient 2, ingredient 3])
-#### - Option to rank ingredients in order of ingredients. i.e. each successive ingredient in list is weighted incrementally less in the search query??
-#### - what else??
-
-
 ## Project folder structure
 <img width="427" alt="Screen Shot 2021-03-15 at 5 30 57 PM" src="https://user-images.githubusercontent.com/29209748/111242231-f8886900-85bb-11eb-908b-2b01f4219730.png">
 
 
-## Installation and user guide on how to use the Cooksmart-recommender-system
+## Installation and user guide on how to use CookSmart
 
-To install and use the recommender system, you can follow the below steps or refer to the example section below.
+To install and use CookSmart, you can follow the below steps or refer to the example section below.
 
-1. Clone the repository 
+1. Clone the repository:
 	```git clone https://github.com/sandeeptiwari6/cooksmart```
 2. 
 	```cd cooksmart```
@@ -79,43 +70,21 @@ To install and use the recommender system, you can follow the below steps or ref
 	```python setup.py install```
 
 
-4. Once the download and installation is complete, you should be able to import the cooksmart package in python using the below command:
-
-   ```import cooksmart```
-
-5. To generate and retrieve the recipe recommendatiosn, use the command in the order lsited below:
+## Example
    
    ```
+   import cooksmart
+   
    rr = cooksmart.RecipeRecommender()
    rr.fit()
-   query = ["pepper", "chicken", "salt", "vinegar", "tomato", "cheese"]
+   query = ["pepper", "chicken", "pesto", "vinegar", "tomato", "cheese"]
    rr.get_recommendations(query)
    rr.visualize_fit()
-   rr.visualize_recommendation()
    ```
-  Simply change the list of ingredients of your choice in the query. The end result is a list of recipe recommendations that has the recipe name, ingredients and cooking directions.
-
-
-### Example
-
-- Use the sample.py file which contains the code to download, install and import the function from the package.
-- Change the list of ingredients of your choice for which you would need the recipe and run the code.
-	   E.g.: "pepper", "chicken", "vinegar", "tomato", "cheese"
-- Voila!! This should result in some recipes like below –
-
-
-- Re-run the code until you arrive at a desired set of recipes.
-- Happy cooking!! 
+  Simply change your query list of ingredients. The end result is a table of recipe recommendations that has the recipe name, ingredients and cooking directions.
 
 
 ## Limitations
 
-In its current form, the recommender system does not handle recommendations based on priority of the input ingredients which might produce undesired results. The util.py file handles basic data preprocessing and can be expanded further to accomadate advance functionalities to handle various recipe datasets outside our package. The package also does not have an UI interface which could make the interaction seamless for non technical users. 
-
-
-
-
-
-
-
+In its current form, the recommender system does not handle recommendations based on priority of the input ingredients which might produce undesired results. The util.py file handles basic data preprocessing and can be expanded further to accomadate advance functionalities to handle various recipe datasets outside our package. The package does not have an UI interface in its current state, but providing one in the future would make the interaction seamless for non-technical users. 
 
