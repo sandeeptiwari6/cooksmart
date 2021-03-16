@@ -64,6 +64,7 @@ To perform preprocessing on the data that is downloaded from the source, we will
 
 
 ## Project folder structure
+<img width="427" alt="Screen Shot 2021-03-15 at 5 30 57 PM" src="https://user-images.githubusercontent.com/29209748/111242231-f8886900-85bb-11eb-908b-2b01f4219730.png">
 
 
 ## Installation and user guide on how to use the Cooksmart-recommender-system
