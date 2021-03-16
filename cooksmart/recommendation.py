@@ -168,7 +168,6 @@ class RecipeRecommender:
                 line_close=True,
                 color_discrete_sequence=px.colors.sequential.Plasma_r,
                 template="plotly_dark")
-            self.visualize_fit()
             fig.show()
         except AttributeError:
             raise AttributeError(" Call `get_recommendations` first")
