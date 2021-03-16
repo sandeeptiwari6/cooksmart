@@ -70,18 +70,22 @@ To perform preprocessing on the data that is downloaded from the source, we will
 
 To install and use the recommender system, you can follow the below steps or refer to the example section below.
 
-1. To use the recommender system you will first need to download and install the package by running the below command:
+1. Clone the repository 
+	```git clone https://github.com/sandeeptiwari6/cooksmart```
+2. 
+	```cd cooksmart```
+3. 
+	```python setup.py```
 
-   ```python -m pip install --index-url https://test.pypi.org/simple/ Cooksmart-recommender-system```
 
-2. Once the download and installation is complete, you should be able to import the Cooksmart-recommender-system package on your machine using the below command:
+4. Once the download and installation is complete, you should be able to import the Cooksmart-recommender-system package on your machine using the below command:
 
-   ```import Cooksmart-recommender-system```
+   ```import cooksmart```
 
-3. To generate and retrieve the recipe recommendatiosn, use the command in the order lsited below:
+5. To generate and retrieve the recipe recommendatiosn, use the command in the order lsited below:
    
    ```
-   rr = Cooksmart-recommender-system.RecipeRecommender()
+   rr = cooksmart.RecipeRecommender()
    rr.fit()
    query = ["pepper", "chicken", "salt", "vinegar", "tomato", "cheese"]
    rr.get_recommendations(query)
