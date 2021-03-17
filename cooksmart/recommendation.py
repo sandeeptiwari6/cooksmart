@@ -11,6 +11,7 @@ import requests
 import pyLDAvis
 import pyLDAvis.sklearn
 import plotly.express as px
+import matplotlib.pyplot as plt
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
@@ -149,8 +150,6 @@ class RecipeRecommender:
         save_file = 'lda-results.html'
         pyLDAvis.save_html(topic_viz, save_file)
         webbrowser.open('file://' + os.path.realpath(save_file))
-        time.sleep(3)
-        os.remove(save_file)
 
     def visualize_recommendation(self):
         """
