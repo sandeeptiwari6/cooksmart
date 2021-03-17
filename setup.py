@@ -24,6 +24,6 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     python_requires=">=3.6",
     install_requires=['pandas', 'numpy', 'pyLDAvis', 'sklearn', 'plotly',
-                      'matplotlib']
+                      'matplotlib', 'requests']
 
 )
