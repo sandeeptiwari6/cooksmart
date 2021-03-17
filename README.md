@@ -1,5 +1,5 @@
 ## Data 515: Software Design for Data Science
-
+[![Build Status](https://api.travis-ci.com/sandeeptiwari6/cooksmart.svg?branch=main)](https://travis-ci.com/github/sandeeptiwari6/cooksmart)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## CookSmart - Recipe Recommendation system
