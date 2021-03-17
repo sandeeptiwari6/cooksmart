@@ -3,7 +3,6 @@ import numpy as np
 import pickle
 import os
 import webbrowser
-import time
 
 import io
 import requests
@@ -11,7 +10,6 @@ import requests
 import pyLDAvis
 import pyLDAvis.sklearn
 import plotly.express as px
-import matplotlib.pyplot as plt
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
