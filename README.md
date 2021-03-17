@@ -81,11 +81,11 @@ To install and use CookSmart, you can follow the below steps or refer to the exa
    r.fit()
    query = ["pepper", "chicken", "pesto", "vinegar", "tomato", "cheese"]
    ```
-   []: # 'To get the default count of recommendations which is set to 10'
+   To get the default count of recommendations which is set to 10
    ```
    r.get_recommendations(query)
    ```
-   []: # 'To get top 5 recommendations'
+   To get top 5 recommendations
    ```
    r.get_recommendations(query, 5)
    ```
