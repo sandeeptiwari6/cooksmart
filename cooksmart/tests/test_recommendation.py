@@ -127,15 +127,15 @@ class test_rr_visualize_fit(unittest.TestCase):
     # pyLDAvis should be called once
     @patch('cooksmart.recommendation.pyLDAvis.sklearn.prepare')
     @patch('cooksmart.recommendation.pyLDAvis.save_html')
-    @patch('cooksmart.recommendation.os.remove')
-    @patch('cooksmart.recommendation.webbrowser')
-    def test_pyLDAvis_calls1(self, mock_web, mock_os, mock_save, mock_prepare):
+    # @patch('cooksmart.recommendation.os.remove')
+    # @patch('cooksmart.recommendation.webbrowser')
+    def test_pyLDAvis_calls1(self, mock_save, mock_prepare):
         r = rr()
         r.fit()
         r.visualize_fit()
         self.assertEqual(mock_prepare.call_count, 1)
         self.assertEqual(mock_save.call_count, 1)
-        self.assertEqual(mock_os.call_count, 1)
+        # self.assertEqual(mock_os.call_count, 1)
 
 
 class test_rr_visualize_recommendation(unittest.TestCase):
