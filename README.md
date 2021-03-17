@@ -73,13 +73,13 @@ To install and use CookSmart, you can follow the below steps or refer to the exa
 ## Example
    
    ```
-   import cooksmart
+   from cooksmart.recommendation import RecipeRecommender as rr
    
-   rr = cooksmart.RecipeRecommender()
-   rr.fit()
+   r = rr()
+   r.fit()
    query = ["pepper", "chicken", "pesto", "vinegar", "tomato", "cheese"]
-   rr.get_recommendations(query)
-   rr.visualize_fit()
+   r.get_recommendations(query)
+   r.visualize_fit()
    ```
   Simply change your query list of ingredients. The end result is a table of recipe recommendations that has the recipe name, ingredients and cooking directions.
 
