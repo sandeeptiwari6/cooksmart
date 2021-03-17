@@ -1,5 +1,7 @@
 ## Data 515: Software Design for Data Science
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 ## CookSmart - Recipe Recommendation system
 
 ## Introduction 
