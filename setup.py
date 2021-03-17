@@ -12,9 +12,6 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/sandeeptiwari6/cooksmart",
-    project_urls={
-        "Bug Tracker": "https://github.com/sandeeptiwari6/cooksmart/issues",
-    },
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
