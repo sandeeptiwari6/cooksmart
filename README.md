@@ -80,8 +80,10 @@ To install and use CookSmart, you can follow the below steps or refer to the exa
    r = RecipeRecommender()
    r.fit()
    query = ["pepper", "chicken", "pesto", "vinegar", "tomato", "cheese"]
+   # To get the default count of recommendations which is set to 10
    r.get_recommendations(query)
-   r.visualize_fit()
+   # To get top 5 recommendations 
+   r.get_recommendations(query, 5)
    ```
   Simply change your query list of ingredients. The end result is a table of recipe recommendations that has the recipe name, ingredients and cooking directions.
 
