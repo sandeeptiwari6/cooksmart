@@ -73,9 +73,9 @@ To install and use CookSmart, you can follow the below steps or refer to the exa
 ## Example
    
    ```
-   from cooksmart.recommendation import RecipeRecommender as rr
+   from cooksmart import RecipeRecommender
    
-   r = rr()
+   r = RecipeRecommender()
    r.fit()
    query = ["pepper", "chicken", "pesto", "vinegar", "tomato", "cheese"]
    r.get_recommendations(query)
